@@ -70,6 +70,12 @@ Other helpful options include `message = FALSE` and `warning = FALSE` to keep R 
 
 Knitting will run all code chunks, but when working on a Rmd document you may want to test code chunks without knitting them (or see the results/warnings/messages if you chose to suppress them in the output). Using the little green play button in the upper-right corner will run a chunk and create a little output area beneath. This is similar to highlighting lines and running them from within a script (which you can also do in Rmd).
 
+A code chunk that produces a figure will insert that figure into the output document.
+```{r warning = FALSE, message=FALSE}
+ds <- diamonds
+ggplot(ds, aes(x = price)) + geom_histogram() + ggtitle("A histogram")
+```
+
 ## How to create a new Rmd file
 
 File > New File > R Markdown. Pick a format, give it a title and author. But don't stress about your choices, because you can always change the YAML header later. RStudio will create a nice template depending on which format you choose to get you started. 
