@@ -1,9 +1,18 @@
 ---
 title: "Markdown Basics"
 output: html_document
+
+# output: pdf_document
+
+# output: 
+#   html_document:
+#     toc: true
+#     toc_float: true
+#     code_folding: hide
+#     theme: united
 ---
 <!-- COMPONENT 1: The "YAML HEADER" above defines attributes of the document and metadata -->
-<!-- Let's switch output from html to pdf and see what happens -->
+<!-- Some other output options to try are commented above-->
 
 
 <!-- COMPONENT 2: Markdown text-->
@@ -38,6 +47,8 @@ Hyperlinks are easy to embded in text, like so: [click here](https://padlab.ucr.
 
 Backticks (the funny looking apostrophes above tab) let us embded R code in the document. You can do this in a text sentence like so: `r 5*5`. Why do we need to put 'r' in there? Let's try it without: `5*5`. You can use backticks to just format something as code (which is nice for sharing coding examples). Putting 'r' in the code tells Rmd to run it as R code. You need to specify R because Rmd can actually run other types of code, including python and shell scripts. 
 
+### Code chunks 
+
 For more extended code, we need to insert a code chunk. You can use the insert menu in the upper right corner, or you can put three backticks on a line followed by {r} to specify that it is an R language chunk. Every line will be treated as R code until you put a line with another three backticks.
 <!-- COMPONENT 3: Code chunks-->
 ```{r}
@@ -70,12 +81,28 @@ Other helpful options include `message = FALSE` and `warning = FALSE` to keep R 
 
 Knitting will run all code chunks, but when working on a Rmd document you may want to test code chunks without knitting them (or see the results/warnings/messages if you chose to suppress them in the output). Using the little green play button in the upper-right corner will run a chunk and create a little output area beneath. This is similar to highlighting lines and running them from within a script (which you can also do in Rmd).
 
+### Figures 
+
 A code chunk that produces a figure will insert that figure into the output document.
 ```{r warning = FALSE, message=FALSE}
 ds <- diamonds
 ggplot(ds, aes(x = price)) + geom_histogram() + ggtitle("A histogram")
 ```
 
+### Tables 
+Tibbles can become tables really easily. You can print them as is:
+```{r}
+ds %>% head()
+```
+A much nicer option is to use a formatting function such as `kable`. 
+```{r}
+library(knitr)
+kable(ds %>% head(), caption = "The first 5 diamond cuts and prices")
+```
+
+
 ## How to create a new Rmd file
 
 File > New File > R Markdown. Pick a format, give it a title and author. But don't stress about your choices, because you can always change the YAML header later. RStudio will create a nice template depending on which format you choose to get you started. 
+
+There are many different output options to change the format of your document and its appearance. Check <https://bookdown.org/yihui/rmarkdown/documents.html> for an overview.
