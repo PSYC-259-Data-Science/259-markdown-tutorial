@@ -11,21 +11,19 @@ output: html_document
 #     code_folding: hide
 #     theme: united
 ---
-<!-- COMPONENT 1: The "YAML HEADER" above defines attributes of the document and metadata -->
+<!-- The "YAML HEADER" above defines attributes of the document and metadata -->
 <!-- Some other output options to try are commented above-->
 
-
-<!-- COMPONENT 2: Markdown text-->
 # Level 1 heading 
 
-Paragraph text. Note that comments in Rmd use html style <!- --> format instead of R # format. That's because the # symbols is used to define headings. Luckily you can use the RStudio comment/uncomment shortcut and it will comment text the right way.
+Paragraph text. Note that comments in Rmd use html style <!- --> format instead of R # format. That's because the # symbols is used to define headings. Luckily you can use the RStudio comment/uncomment shortcut and it will comment text the right way for whatever type of code you are writing.
 
 ## Level 2 heading
 
 Paragraph text. Use single asterisks for *italics*, double asterisks for **bold**.
 Notice that if you hit enter and create multiple lines, markdown interprets this as a continuous paragraph.
 
-If you want a new paragraph, put a blank line in between. Github README files use these same conventions but are saved as .md (plain markdown instead of R Markdown). So these are good to know for documenting your project repo, not just for using in Rmd.
+If you want a new paragraph, put a blank line in between. Github README files use these same conventions but are saved as .md (plain markdown instead of R Markdown). These are good to know for documenting your project repo, not just for using in Rmd.
 
 ### Level 3 heading
 
@@ -50,9 +48,8 @@ Backticks (the funny looking apostrophes above tab) let us embded R code in the 
 ### Code chunks 
 
 For more extended code, we need to insert a code chunk. You can use the insert menu in the upper right corner, or you can put three backticks on a line followed by {r} to specify that it is an R language chunk. Every line will be treated as R code until you put a line with another three backticks.
-<!-- COMPONENT 3: Code chunks-->
+
 ```{r}
-library(tidyverse)
 5*5
 x <- 5*5
 ```
@@ -61,7 +58,6 @@ Now we are back to markdown. Notice that by default, the R chunk prints the code
 
 To simply display code without running it, use `eval = FALSE`:
 ```{r eval = FALSE}
-library(tidyverse)
 5*5
 z <- 'Hello'
 ```
@@ -69,6 +65,13 @@ z <- 'Hello'
 To run code quietly without displaying anything, use `include = FALSE`:
 ```{r include = FALSE}
 y <- 5*5*5
+```
+
+`include = FALSE` is good for creating a 'setup chunk', which normally would go at the top of the script. A setup chunk is good to have at the start of your file to load libraries and data and do other data cleaning that you might not want to scroll through. 
+```{r setup, include=FALSE}
+library(tidyverse)
+ds <- diamonds
+ds <- ds %>% filter(cut == "Ideal")
 ```
 
 To suppress the code but show the results, use `echo = FALSE`:
@@ -79,7 +82,7 @@ print(x)
 
 Other helpful options include `message = FALSE` and `warning = FALSE` to keep R warnings and messages from printing in your document. 
 
-Knitting will run all code chunks, but when working on a Rmd document you may want to test code chunks without knitting them (or see the results/warnings/messages if you chose to suppress them in the output). Using the little green play button in the upper-right corner will run a chunk and create a little output area beneath. This is similar to highlighting lines and running them from within a script (which you can also do in Rmd).
+Knitting will run all code chunks, but when working on a Rmd document you may want to test code chunks without knitting them (or see the results/warnings/messages if you chose to suppress them in the output). Using the little green play button in the upper-right corner will run a chunk and create a little output area beneath. This is similar to highlighting lines and running them from within a script (which you can also do in Rmd). The "triangle with a green line under it" button means "run everything up to here", which is helpful to make sure all of your processing steps have been run up to the point that you're working on.
 
 ### Figures 
 
@@ -89,12 +92,16 @@ ds <- diamonds
 ggplot(ds, aes(x = price)) + geom_histogram() + ggtitle("A histogram")
 ```
 
+Have graphics from other sources? Easy! It's just like inserting a hyperlink (I added the `(width=50%}` tag at the end to keep it from filling the entire width of the page, but that's optional: 
+
+![R Markdown hex logo](hex-rmarkdown.png){width=50%}
+
 ### Tables 
 Tibbles can become tables really easily. You can print them as is:
 ```{r}
 ds %>% head()
 ```
-A much nicer option is to use a formatting function such as `kable`. 
+A much nicer option is to use a formatting function such as `kable`, which is a function from the `knitr` package (what turns R Markdown files into documents) that's designed to control the formatting of tables. 
 ```{r}
 library(knitr)
 kable(ds %>% head(), caption = "The first 5 diamond cuts and prices")
